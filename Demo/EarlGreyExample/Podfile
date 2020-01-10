@@ -1,0 +1,81 @@
+#
+#  Copyright 2019 Google Inc.
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+
+# Uncomment this line to define a global platform for your project
+# PLEASE KEEP IT ALPHABETICALLY SORTED (A-Z)
+
+use_frameworks!
+inhibit_all_warnings!
+platform :ios, '11.0'
+
+def shared_pods
+    
+    pod 'AFNetworkActivityLogger', '~> 3.0'
+    pod 'AFNetworking', '~> 3.2'
+    pod 'AppsFlyerFramework', '~> 4.10.3'
+    pod 'CocoaLumberjack/Swift'
+    pod 'Crashlytics'
+    pod 'Fabric'
+    pod 'Firebase/Auth', '~> 6.9.0'
+    pod 'Firebase/Core', '~> 6.9.0'
+    pod 'Firebase/Database', '~> 6.9.0'
+    pod 'Firebase/Messaging', '~> 6.9.0'
+    pod 'Firebase/RemoteConfig', '~> 6.9.0'
+    pod 'GoogleIDFASupport'
+    pod 'GoogleMaps', '~> 2.7'
+    pod 'GoogleSignIn'
+    pod 'GoogleToolboxForMac'
+    pod 'GoogleTagManager', '~> 3.15.0'
+    pod 'IQKeyboardManagerSwift', '~> 6.0.0'
+    pod 'JGMethodSwizzler'
+    pod 'LotameDMP'
+    pod 'MoEngage-iOS-SDK','~> 4.4.0'
+    pod 'MOGeofence'
+    pod 'MZAppearance'
+    pod 'NewRelicAgent', '~> 6.4.1'
+    pod 'NSString+Validation'
+    pod 'OHHTTPStubs/Swift'
+    pod 'Zip', '~> 1.1'
+end
+
+target 'EarlGreyExampleSwift' do
+  shared_pods
+  pod 'EarlGreyApp'
+end
+
+target 'EarlGreyExampleUITests' do
+  shared_pods
+  #inherit! :search_paths
+  pod 'EarlGreyTest'
+end
+
+target 'EarlGreyExampleSwiftUITests' do
+  shared_pods
+  #inherit! :search_paths
+  pod 'EarlGreyTest'
+end
+
+post_install do |installer|
+    installer.pods_project.targets.each do |target|
+        target.build_configurations.each do |config|
+            config.build_settings['SWIFT_VERSION'] = '5.1'
+            config.build_settings['GCC_WARN_INHIBIT_ALL_WARNINGS'] = "YES"
+            if config.name == 'Debug' || config.name == 'Beta' || config.name == 'Development'
+                config.build_settings['OTHER_SWIFT_FLAGS'] = ['$(inherited)', '-Onone']
+                config.build_settings['SWIFT_OPTIMIZATION_LEVEL'] = '-Owholemodule'
+            end
+        end
+    end
+end

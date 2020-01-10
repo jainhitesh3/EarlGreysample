@@ -1,0 +1,6 @@
+framework module NSString_Validation {
+  umbrella header "NSString+Validation-umbrella.h"
+
+  export *
+  module * { export * }
+}
